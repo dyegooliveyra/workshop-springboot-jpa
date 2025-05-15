@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import com.educandoWeb.course.entities.User;
 import com.educandoWeb.course.repositories.UserRepository;
@@ -27,6 +26,10 @@ public class UserService {
 	
 	public User insert(User user) {
 		return userRepository.save(user);
+	}
+	
+	public void delete(Long id) {
+		userRepository.deleteById(id);
 	}
 
 }
