@@ -59,6 +59,10 @@ public class OrderItem implements Serializable {
 	public void setOrder(Order order) {
 		id.setOrder(order);
 	}
+	
+	public Double getSubTotal() {
+		return price * quantity;
+	}
 
 	@JsonProperty("product")
 	public Product gerProduct() {
