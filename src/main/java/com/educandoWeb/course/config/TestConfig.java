@@ -11,12 +11,14 @@ import org.springframework.context.annotation.Profile;
 import com.educandoWeb.course.entities.Category;
 import com.educandoWeb.course.entities.Order;
 import com.educandoWeb.course.entities.OrderItem;
+import com.educandoWeb.course.entities.Payment;
 import com.educandoWeb.course.entities.Product;
 import com.educandoWeb.course.entities.User;
 import com.educandoWeb.course.entities.enums.OrderStatus;
 import com.educandoWeb.course.repositories.CategoryRepository;
 import com.educandoWeb.course.repositories.OrderItemRepository;
 import com.educandoWeb.course.repositories.OrderRepository;
+import com.educandoWeb.course.repositories.PaymentRepository;
 import com.educandoWeb.course.repositories.ProductRepository;
 import com.educandoWeb.course.repositories.UserRepository;
 
@@ -38,6 +40,9 @@ public class TestConfig implements CommandLineRunner {
 
 	@Autowired
 	private OrderItemRepository orderItemRepository;
+	
+	@Autowired
+	private PaymentRepository paymentRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -46,7 +51,7 @@ public class TestConfig implements CommandLineRunner {
 
 		this.userRepository.saveAll(Arrays.asList(u1, u2));
 
-		Order o1 = new Order(null, Instant.parse("2019-06-20T19:53:07Z"), OrderStatus.WAITING_PAYMENT, u1);
+		Order o1 = new Order(null, Instant.parse("2019-06-20T19:53:07Z"), OrderStatus.PAID, u1);
 		Order o2 = new Order(null, Instant.parse("2019-07-21T03:42:10Z"), OrderStatus.WAITING_PAYMENT, u2);
 		Order o3 = new Order(null, Instant.parse("2019-07-22T15:21:22Z"), OrderStatus.WAITING_PAYMENT, u1);
 
@@ -80,6 +85,12 @@ public class TestConfig implements CommandLineRunner {
 		OrderItem oi4 = new OrderItem(o3, p5, 2, p5.getPrice());
 
 		this.orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
+		
+		Payment p = new Payment(null,Instant.parse("2019-06-20T20:53:07Z"), o1);
+		
+		o1.setPayment(p);
+		
+		this.orderRepository.save(o1);
 	}
 
 }
