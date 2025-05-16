@@ -34,18 +34,18 @@ public class UserService {
 
 	public void delete(Long id) {
 		try {
-	        User user = findById(id);
-	        userRepository.delete(user);
-	    } catch (ResourceNotFoundException e) {
-	        throw new ResourceNotFoundException(id);
-	    } catch (DataIntegrityViolationException e) {
+			User user = findById(id);
+			userRepository.delete(user);
+		} catch (ResourceNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException(e.getMessage());
 		}
 	}
 
 	public User update(Long id, User user) {
 		Optional<User> entityOptional = userRepository.findById(id);
-		User entity = entityOptional.get();
+		User entity = entityOptional.orElseThrow(() -> new ResourceNotFoundException(id));
 		updateData(entity, user);
 		return userRepository.save(entity);
 	}
